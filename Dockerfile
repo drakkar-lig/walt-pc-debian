@@ -2,6 +2,13 @@ FROM debian:stretch
 
 RUN apt-get update && apt-get install -y linux-image-amd64 systemd-sysv openssh-server busybox-static locales netcat-openbsd lldpd
 
+# Unreleased klibc that fixes a bug where ipconfig does not work properly
+# with multiple interfaces (Debian bug #852480)
+ADD klibc-utils_2.0.4-10_amd64.deb libklibc_2.0.4-10_amd64.deb /tmp/
+RUN dpkg -i /tmp/klibc-utils_2.0.4-10_amd64.deb /tmp/libklibc_2.0.4-10_amd64.deb
+RUN rm /tmp/*klibc*.deb
+RUN update-initramfs -u
+
 # Install kernel and initrd
 RUN mkdir -p /pc-x86-64-initrd/
 RUN touch /pc-x86-64-initrd/no-dtb
