@@ -1,0 +1,11 @@
+[Unit]
+Description=Walt notify bootup script
+After=ssh.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/walt-notify-bootup
+
+[Install]
+WantedBy=multi-user.target
+
