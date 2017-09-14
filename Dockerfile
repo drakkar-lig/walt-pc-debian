@@ -1,5 +1,6 @@
 FROM debian:stretch
 
+# Base packages that are really needed for Walt to work correctly.
 RUN apt-get update && apt-get install -y linux-image-amd64 systemd-sysv openssh-server busybox-static locales netcat-openbsd lldpd
 
 # Unreleased klibc that fixes a bug where ipconfig does not work properly
@@ -27,3 +28,6 @@ RUN ln -s /etc/systemd/system/walt-notify-bootup.service /etc/systemd/system/mul
 
 # Allow passwordless root login on the serial console
 RUN sed -i -e 's#^root:[^:]*:#root::#' /etc/shadow
+
+# Additional packages
+RUN apt-get install -y vim
