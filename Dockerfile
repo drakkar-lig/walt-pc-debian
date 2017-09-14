@@ -10,11 +10,11 @@ RUN rm /tmp/*klibc*.deb
 RUN update-initramfs -u
 
 # Install kernel and initrd
-RUN mkdir -p /pc-x86-64-initrd/
-RUN touch /pc-x86-64-initrd/no-dtb
+RUN mkdir -p /pc-x86-64/
+RUN touch /pc-x86-64/no-dtb
 # This always points to the latest kernel version
-RUN ln -s ../vmlinuz /pc-x86-64-initrd/kernel
-RUN ln -s ../initrd.img /pc-x86-64-initrd/initrd
+RUN ln -s ../vmlinuz /pc-x86-64/kernel
+RUN ln -s ../initrd.img /pc-x86-64/initrd
 
 # Configure locale
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
