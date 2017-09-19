@@ -15,6 +15,9 @@ RUN update-initramfs -u
 # /vmlinuz and /initrd.img always point to the latest kernel version.
 RUN mkdir -p /pc-x86-64/ && touch /pc-x86-64/no-dtb && ln -s ../vmlinuz /pc-x86-64/kernel && ln -s ../initrd.img /pc-x86-64/initrd
 
+# Install custom ipxe scripts
+COPY ipxe/ /pc-x86-64/
+
 # Configure locale
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && echo 'fr_FR.UTF-8 UTF-8' >> /etc/locale.gen
 RUN locale-gen
