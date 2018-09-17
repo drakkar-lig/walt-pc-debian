@@ -1,5 +1,8 @@
 FROM debian:stretch
 
+# specify which node models this image can handle
+LABEL walt.node.models=pc-x86-64
+
 # Base packages that are really needed for Walt to work correctly.
 RUN apt-get update && apt-get install -y linux-image-amd64 systemd-sysv openssh-server busybox-static locales netcat-openbsd lldpd \
  && rm -rf /var/lib/apt/lists/* \
