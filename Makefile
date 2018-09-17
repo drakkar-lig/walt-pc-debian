@@ -1,10 +1,16 @@
 
-IMAGE_NAME ?= walt-platform/walt-node:pc-x86-64-debian-stretch
+IMAGE_NAME ?= waltplatform/pc-x86-64-default
+ALIAS1 = waltplatform/pc-x86-64-debian:latest
+ALIAS2 = waltplatform/pc-x86-64-debian:stretch
 
 build:
 	docker build --pull=true --tag=$(IMAGE_NAME) .
+	docker tag $(IMAGE_NAME) $(ALIAS1)
+	docker tag $(IMAGE_NAME) $(ALIAS2)
 
 publish:
 	docker push $(IMAGE_NAME)
+	docker push $(ALIAS1)
+	docker push $(ALIAS2)
 
 all: build
