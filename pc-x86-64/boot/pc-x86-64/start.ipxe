@@ -75,6 +75,9 @@ set bootargs ${nfs_bootargs} ${walt_bootargs} ${console_bootargs} ${other_bootar
 echo Loading initrd...
 initrd ${initrd_url} || initrd ${initrd_fallback_url} || echo No initrd found
 
+echo Loading kernel...
+kernel ${kernel_url} initrd=initrd ${bootargs} || kernel ${kernel_fallback_url} initrd=initrd ${bootargs} || reboot
+
 # boot
 echo Booting kernel with parameters: ${bootargs}
-boot ${kernel_url} ${bootargs} || boot ${kernel_fallback_url} ${bootargs} || reboot
+boot
