@@ -1,5 +1,5 @@
 #!ipxe
-set node_model pc-x86-64
+set node_model pc-x86-32
 # This is provided by iPXE, extracted from BIOS information.
 set node_submodel ${manufacturer}/${product}
 echo Walt node model: ${node_model}

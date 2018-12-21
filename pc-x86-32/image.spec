@@ -3,6 +3,6 @@
     # when the image is mounted
     # -------------------------------------------
     "templates": [
-        "/boot/pc-x86-64/server-params.ipxe"
+        "/boot/pc-x86-32/server-params.ipxe"
     ]
 }

@@ -1,7 +1,7 @@
 
-IMAGE_NAME ?= waltplatform/pc-x86-64-default
-ALIAS1 = waltplatform/pc-x86-64-debian:latest
-ALIAS2 = waltplatform/pc-x86-64-debian:stretch
+IMAGE_NAME ?= waltplatform/pc-x86-32-default
+ALIAS1 = waltplatform/pc-x86-32-debian:latest
+ALIAS2 = waltplatform/pc-x86-32-debian:stretch
 
 build:
 	docker build --pull=true --tag=$(IMAGE_NAME) .
