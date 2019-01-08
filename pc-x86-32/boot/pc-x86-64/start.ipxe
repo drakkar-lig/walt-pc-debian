@@ -1,6 +1,6 @@
 #!ipxe
 # record appropriate walt node model (64-bit CPU or not)
-set node_model pc-x86-32
+set node_model pc-x86-64
 
 # call generic boot script
 chain /start-generic.ipxe

@@ -34,10 +34,6 @@ COPY boot/ /boot
 # Install image spec file
 COPY image.spec /etc/walt/
 
-# Install kernel and initrd.
-# /vmlinuz and /initrd.img always point to the latest kernel version.
-RUN ln -s ../../vmlinuz /boot/pc-x86-32/kernel && ln -s ../../initrd.img /boot/pc-x86-32/initrd
-
 # Configure locale
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && echo 'fr_FR.UTF-8 UTF-8' >> /etc/locale.gen
 RUN locale-gen
