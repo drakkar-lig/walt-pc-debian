@@ -1,20 +1,23 @@
-FROM debian:stretch
+FROM debian:buster
 
 # specify which node models this image can handle
 LABEL walt.node.models=pc-x86-64
 
+# specify min walt server version needed
+LABEL walt.server.minversion=4
+
 # Install packages
 RUN apt-get update && \
     apt-get install -y linux-image-amd64 systemd-sysv openssh-server \
-    busybox-static locales netcat-openbsd lldpd vim \
+    locales netcat-openbsd lldpd vim \
  && rm -rf /var/lib/apt/lists/* \
  && rm -rf /var/cache/apt/*
 
-# Unreleased klibc that fixes a bug where ipconfig does not work properly
-# with multiple interfaces (Debian bug #852480)
-ADD klibc-utils_2.0.4-10_amd64.deb libklibc_2.0.4-10_amd64.deb /tmp/
-RUN dpkg -i /tmp/klibc-utils_2.0.4-10_amd64.deb /tmp/libklibc_2.0.4-10_amd64.deb && \
-    rm -f /tmp/*klibc*.deb && update-initramfs -u
+# install an older static version of busybox for compatibility with
+# node init scripts distributed with older walt server version
+# (if installing busybox-static package instead, we would have
+# to set LABEL walt.server.minversion to 5)
+COPY --from=waltplatform/pc-x86-64-debian:stretch /bin/busybox /bin
 
 # Install custom ipxe boot scripts
 COPY boot/ /boot
