@@ -1,4 +1,0 @@
-#!ipxe
-
-set netconsole_iface ens3
-set additional_kernel_params console=ttyS0

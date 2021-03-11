@@ -15,6 +15,7 @@ RUN mv /bin/mount /bin/mount.saved && ln -s /bin/true /bin/mount && \
     /debootstrap/debootstrap --second-stage
 
 # specify which node models this image can handle
+# note: since this is a 32-bit OS, we support both 32-bit and 64-bit nodes
 LABEL walt.node.models=pc-x86-32,pc-x86-64
 
 # specify min walt server version needed

@@ -22,6 +22,9 @@ COPY --from=waltplatform/pc-x86-64-debian:stretch /bin/busybox /bin
 # Install custom ipxe boot scripts
 COPY boot/ /boot
 
+# This is a 64-bit OS, we do not support 32-bit nodes here
+RUN rm -rf /boot/pc-x86-32
+
 # Install image spec file
 COPY image.spec /etc/walt/
 

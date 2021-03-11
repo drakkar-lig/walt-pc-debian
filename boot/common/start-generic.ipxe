@@ -4,14 +4,6 @@ set node_submodel ${manufacturer}/${product}
 echo Walt node model: ${node_model}
 echo Walt node submodel: ${node_submodel}
 
-# Compute url for kernel, initrd, and custom ipxe scripts
-set kernel_url /${node_submodel}/kernel
-set kernel_fallback_url /kernel
-set initrd_url /${node_submodel}/initrd
-set initrd_fallback_url /initrd
-set ipxe_script /boot-params.ipxe
-set ipxe_script_submodel /${node_submodel}/boot-params.ipxe
-
 # Default value for variables (may be overriden by custom ipxe script)
 set walt_init /bin/walt-init
 # Interface name within the booted OS on which netconsole should send logs
@@ -24,13 +16,13 @@ set server_mac
 # Load server info (mac address) stored as an ipxe script
 echo Loading server ipxe script for server conf vars
 # note: without imgfree, later boot stages may fail
-chain /server-params.ipxe && imgfree server-params.ipxe ||
+chain ${urlprefix}/server-params.ipxe && imgfree server-params.ipxe ||
 
 # Load custom ipxe scripts: model, then submodel.
 echo Loading custom ipxe scripts from Walt image
 # imgfree is necessary, otherwise the loaded ipxe script corrupts the memory of the initrd.
-chain /boot-params.ipxe && imgfree boot-params.ipxe ||
-chain /${node_submodel}/boot-params.ipxe && imgfree boot-params.ipxe ||
+chain ${urlprefix}/boot-params.ipxe && imgfree boot-params.ipxe ||
+chain ${urlprefix}/${node_submodel}/boot-params.ipxe && imgfree boot-params.ipxe ||
 
 # Compute kernel command line args
 set nfs_root ${next-server}:/var/lib/walt/nodes/${mac}/fs
@@ -72,8 +64,11 @@ set other_bootargs init=${walt_init} panic=30 ${ip_conf} BOOTIF=01-${mac:hexhyp}
 set bootargs ${nfs_bootargs} ${walt_bootargs} ${console_bootargs} ${other_bootargs} ${additional_kernel_params}
 
 echo Loading initrd...
-initrd ${initrd_url} || initrd ${initrd_fallback_url} || echo No initrd found
+initrd ${urlprefix}/initrd || echo No initrd found
+
+echo Loading kernel...
+kernel ${urlprefix}/kernel initrd=initrd ${bootargs} || reboot
 
 # boot
 echo Booting kernel with parameters: ${bootargs}
-boot ${kernel_url} ${bootargs} || boot ${kernel_fallback_url} ${bootargs} || reboot
+boot
