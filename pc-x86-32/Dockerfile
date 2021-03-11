@@ -3,6 +3,9 @@ RUN apt-get update && apt-get install -y debootstrap && apt-get clean
 WORKDIR /root
 RUN debootstrap --foreign --no-check-gpg --variant minbase --arch i386 \
                 buster fs
+# apparently this newer version of debootstrap creates a symlink
+# /root/fs/proc -> /proc
+RUN [ -L /root/fs/proc ] && rm /root/fs/proc && mkdir /root/fs/proc
 
 # layered image: build on this base debian directory
 # --------------------------------------------------
@@ -10,9 +13,7 @@ FROM scratch
 WORKDIR /
 # Copy the subdirectory generated from debootstrap first stage
 COPY --from=builder /root/fs .
-
-RUN mv /bin/mount /bin/mount.saved && ln -s /bin/true /bin/mount && \
-    /debootstrap/debootstrap --second-stage
+RUN /debootstrap/debootstrap --second-stage
 
 # specify which node models this image can handle
 # note: since this is a 32-bit OS, we support both 32-bit and 64-bit nodes
