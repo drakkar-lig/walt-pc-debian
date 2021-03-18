@@ -22,12 +22,19 @@ LABEL walt.node.models=pc-x86-32,pc-x86-64
 # specify min walt server version needed
 LABEL walt.server.minversion=4
 
+# copy walt-node python wheels
+COPY *.whl /root/
+
 # Install packages
 RUN apt update && \
+    DEBIAN_FRONTEND=noninteractive \
     apt install -y linux-image-686-pae systemd-sysv openssh-server \
-        locales netcat-openbsd lldpd vim \
+        locales netcat-openbsd lldpd vim python3-pip kexec-tools \
  && rm -rf /var/lib/apt/lists/* \
- && rm -rf /var/cache/apt/*
+ && rm -rf /var/cache/apt/* \
+ && pip3 install /root/*.whl && rm -f /root/*.whl \
+ && walt-node-setup \
+ && ln -s $(which walt-ipxe-kexec-reboot) /bin/walt-reboot
 
 # install an older static version of busybox for compatibility with
 # node init scripts distributed with older walt server version
