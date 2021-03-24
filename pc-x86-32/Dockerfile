@@ -26,7 +26,7 @@ WORKDIR /
 COPY --from=builder /root/fs .
 
 # prepare and run 1st customization
-COPY customize1 /
+COPY customize1 .
 COPY --from=builder /root/*.deb /root/
 RUN /root/customize1.sh pc-x86-32
 

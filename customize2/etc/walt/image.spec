@@ -4,5 +4,11 @@
     # -------------------------------------------
     "templates": [
         "/boot/common/server-params.ipxe"
-    ]
+    ],
+    # features that may be enabled if available
+    # on server too
+    # -----------------------------------------
+    "features": {
+        "nbfs": "/usr/bin/activate-nbfs.sh"
+    }
 }

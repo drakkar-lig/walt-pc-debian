@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 PACKAGES="systemd-sysv openssh-server \
     locales netcat-openbsd lldpd vim python3-pip kexec-tools"
@@ -9,11 +9,19 @@ if [ "$model" = "pc-x86-32" ]
 then
     # resume deboostrap process
     /debootstrap/debootstrap --second-stage
-    # add specific packages
+    # set linux package
     KERNEL_PACKAGE="linux-image-686-pae"
+    # set appropriate nbfs mount binary
+    mv /usr/sbin/mount.nbfs.static.i386 /sbin/mount.nbfs.static
 else # pc-x86-64
+    # set linux package
     KERNEL_PACKAGE="linux-image-amd64"
+    # set appropriate nbfs mount binary
+    mv /usr/sbin/mount.nbfs.static.amd64 /sbin/mount.nbfs.static
 fi
+
+# remove other versions of nbfs mount binary
+rm /usr/sbin/mount.nbfs.static.*
 
 install_packages() {
     apt-get update

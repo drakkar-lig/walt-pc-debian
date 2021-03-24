@@ -20,7 +20,7 @@ LABEL walt.server.minversion=4
 # prepare and run 1st customization
 COPY customize1 /
 COPY --from=builder /root/*.deb /root/
-RUN /root/customize1.sh pc-x86-64   # here
+RUN /root/customize1.sh pc-x86-64
 
 # install an older static version of busybox for compatibility with
 # node init scripts distributed with older walt server version

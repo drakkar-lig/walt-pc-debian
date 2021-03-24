@@ -24,19 +24,7 @@ echo Loading custom ipxe scripts from Walt image
 chain ${urlprefix}/boot-params.ipxe && imgfree boot-params.ipxe ||
 chain ${urlprefix}/${node_submodel}/boot-params.ipxe && imgfree boot-params.ipxe ||
 
-# Compute kernel command line args
-set nfs_root ${next-server}:/var/lib/walt/nodes/${mac}/fs
-
-# Specifying the NFS version is necessary for initrd-less images: the
-# kernel defaults to NFS version 2 and somehow panics even before
-# running init. Images with initrd work fine because they negotiate the
-# version with the server, starting with NFSv4.
-# We would normally use "nfsvers=3" here, but this is not understood
-# by Debian's initrd (nfsmount from klibc).  So, use the old "v3"
-# syntax, which is understood both by the kernel (for initrd-less
-# images) and by Debian's initrd.
-set nfs_bootargs root=/dev/nfs nfsroot=${nfs_root},v3
-
+# compute walt bootargs
 set walt_bootargs walt.node.model=${node_model} walt.server.ip=${next-server}
 
 # For now, Walt's logging module (NetconsoleListener) does not know
@@ -61,7 +49,7 @@ set ip_conf ip=dhcp
 # to be compatible.
 set other_bootargs init=${walt_init} panic=30 ${ip_conf} BOOTIF=01-${mac:hexhyp}
 
-set bootargs ${nfs_bootargs} ${walt_bootargs} ${console_bootargs} ${other_bootargs} ${additional_kernel_params}
+set bootargs ${fs_bootargs} ${walt_bootargs} ${console_bootargs} ${other_bootargs} ${additional_kernel_params}
 
 echo Loading initrd...
 initrd ${urlprefix}/initrd || echo No initrd found
