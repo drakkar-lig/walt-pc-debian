@@ -16,5 +16,8 @@ locale-gen
 # Allow passwordless root login on the serial console
 sed -i -e 's#^root:[^:]*:#root::#' /etc/shadow
 
+# enable service to save uptime in /run when ready
+systemctl enable uptime-ready
+
 # cleanup
 rm -f /root/customize2.sh
