@@ -19,5 +19,10 @@ sed -i -e 's#^root:[^:]*:#root::#' /etc/shadow
 # enable service to save uptime in /run when ready
 systemctl enable uptime-ready
 
+# tweak for faster bootup
+systemctl disable systemd-timesyncd
+systemctl disable apt-daily.timer
+systemctl disable apt-daily-upgrade.timer
+
 # cleanup
 rm -f /root/customize2.sh
