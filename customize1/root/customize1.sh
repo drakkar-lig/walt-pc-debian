@@ -1,7 +1,9 @@
 #!/bin/sh
 
 PACKAGES="systemd-sysv openssh-server \
-    locales netcat-openbsd lldpd vim python3-pip kexec-tools"
+    locales netcat-openbsd lldpd vim python3-pip kexec-tools \
+    firmware-bnx2 firmware-bnx2x firmware-qlogic firmware-misc-nonfree \
+    htop"
 
 model="$1"
 
@@ -22,6 +24,9 @@ fi
 
 # remove other versions of nbfs mount binary
 rm /usr/sbin/mount.nbfs.static.*
+
+# add non-free apt section
+sed -i -e 's/main/main non-free/g' /etc/apt/sources.list
 
 install_packages() {
     apt-get update
